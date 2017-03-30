@@ -52,9 +52,12 @@ void Adafruit_FeatherOLED::renderBattery ( void )
   if (_batteryVisible)
   {
     // Render the voltage in text
-    setCursor(BATTTEXT_STARTX, BATTTEXT_STARTY);
-    print(_battery, 2);
-    println("V");
+    if (_batteryText)
+    {
+      setCursor(BATTTEXT_STARTX, BATTTEXT_STARTY);
+      print(_battery, 2);
+       println("V");
+    }
 
     // Render the battery icon if requested
     if (_batteryIcon)
@@ -172,5 +175,17 @@ void Adafruit_FeatherOLED::clearMsgArea ( void )
 {
   fillRect(0, 8, 128, 16, BLACK);
   setCursor(0, 8);
+  display();
+}
+/******************************************************************************/
+/*!
+    @brief  Clears the message area (the middle 128x16 pixels) and sets the
+            cursor to 0, 8
+*/
+/******************************************************************************/
+void Adafruit_FeatherOLED::clearStatArea ( void )
+{
+  fillRect(0, 24, 128, 8, BLACK);
+  setCursor(0, 24);
   display();
 }

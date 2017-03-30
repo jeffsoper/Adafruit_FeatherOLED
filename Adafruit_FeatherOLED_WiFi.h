@@ -48,13 +48,16 @@ class Adafruit_FeatherOLED_WiFi : public Adafruit_FeatherOLED
     bool    _connected;
     bool    _connectedVisible;
     int     _rssi;
+    bool    _rssiIcon;
     bool    _rssiVisible;
     int32_t _ipAddress;
     bool    _ipAddressVisible;
 
+    /* moved to public
     void renderRSSI       ( void );
     void renderConnected  ( void );
     void renderIPAddress  ( void );
+    */
 
   public:
 
@@ -64,6 +67,7 @@ class Adafruit_FeatherOLED_WiFi : public Adafruit_FeatherOLED
       _connected          = false;
       _connectedVisible   = true;
       _rssi               = -99;
+      _rssiIcon           = true;
       _rssiVisible        = true;
       _ipAddress          = 0;
       _ipAddressVisible   = true;
@@ -73,9 +77,15 @@ class Adafruit_FeatherOLED_WiFi : public Adafruit_FeatherOLED
     void setConnectedVisible ( bool enable )    { _connectedVisible = enable; }
     void setRSSI             ( int rssi )       { _rssi = rssi; }
     void setRSSIVisible      ( bool enable )    { _rssiVisible = enable; }
+    void setRSSIIconVisible  ( bool enable )    { _rssiIcon = enable; }
     void setIPAddress        ( uint32_t addr )  { _ipAddress = addr; }
     void setIPAddressVisible ( bool enable )    { _ipAddressVisible = enable; }
-    void refreshIcons  ( void );
+    void refreshIcons  ( bool clearStatus = true );
+
+    void renderRSSI       ( void );
+	void renderConnected  ( void );
+	void renderIPAddress  ( void );
+
 };
 
 #endif /* _Adafruit_FeatherOLED_WiFi_H_ */

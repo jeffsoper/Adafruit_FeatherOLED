@@ -46,6 +46,7 @@ class Adafruit_FeatherOLED : public Adafruit_SSD1306
   protected:
     float   _battery;
     bool    _batteryIcon;
+    bool    _batteryText;
     bool    _batteryVisible;
 
   public:
@@ -60,16 +61,20 @@ class Adafruit_FeatherOLED : public Adafruit_SSD1306
     {
       _battery            = 0.0F;
       _batteryIcon        = true;
+      _batteryText        = true;
       _batteryVisible     = true;
     }
 
     void setBattery          ( float vbat )     { _battery = vbat; }
     void setBatteryVisible   ( bool enable )    { _batteryVisible = enable; }
+    void setBatteryText      ( bool enable )    { _batteryText = enable; }
     void setBatteryIcon      ( bool enable )    { _batteryIcon = enable; }
+
 
     void init          ( void );
     void clearMsgArea  ( void );
-    void renderBattery    ( void );
+    void clearStatArea ( void );
+    void renderBattery ( void );
 };
 
 #endif /* _Adafruit_FeatherOLED_H_ */

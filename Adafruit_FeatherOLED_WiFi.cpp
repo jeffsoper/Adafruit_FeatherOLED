@@ -42,9 +42,63 @@
 /******************************************************************************/
 void Adafruit_FeatherOLED_WiFi::renderRSSI( void )
 {
+
+  if (_rssiIcon)
+  {
+	//render antenna
+    drawLine( 10,//x
+              0,//yy
+              14,//x_end
+              0,//y_end
+              WHITE);
+    drawLine( 11,//x
+              1,//yy
+              13,//x_end
+              1,//y_end
+              WHITE);
+    drawLine( 12,//x
+              0,//yy
+              12,//x_end
+              6,//y_end
+              WHITE);
+    //need to adjust bars
+    if (_rssi > -80) {
+		drawLine( 2,//x
+            6,//yy
+            2,//x_end
+            6,//y_end
+            WHITE);
+	}
+	if (_rssi > -60) {
+		drawLine( 4,//x
+		    4,//yy
+		    4,//x_end
+		    6,//y_end
+		    WHITE);
+	}
+	if (_rssi > -40) {
+		drawLine( 6,//x
+		    2,//yy
+		    6,//x_end
+		    6,//y_end
+		    WHITE);
+
+	}
+	if (_rssi > -20) {
+	    drawLine( 8,//x
+            0,//yy
+            8,//x_end
+            6,//y_end
+            WHITE);
+	}
+	setCursor(18,0);
+  }
+
   if (_rssiVisible)
   {
-    setCursor(0,0);
+	if (!_rssiIcon) {
+    	setCursor(0,0);
+	}
     print("RSSI:");
     if (_connected)
     {
@@ -89,14 +143,22 @@ void Adafruit_FeatherOLED_WiFi::renderIPAddress ( void )
   {
     if (_connected)
     {
-      setCursor(0,24);
+      /*setCursor(0,24); printing in reverse order
       print((_ipAddress >> 24) & 0xFF, DEC);
       print(".");
       print((_ipAddress >> 16) & 0xFF, DEC);
       print(".");
       print((_ipAddress >> 8) & 0xFF, DEC);
       print(".");
+      print(_ipAddress & 0xFF, DEC); */
+      setCursor(0,24);
       print(_ipAddress & 0xFF, DEC);
+      print(".");
+      print((_ipAddress >> 8) & 0xFF, DEC);
+      print(".");
+      print((_ipAddress >> 16) & 0xFF, DEC);
+      print(".");
+      print((_ipAddress >> 24) & 0xFF, DEC);
     }
   }
 }
@@ -106,13 +168,15 @@ void Adafruit_FeatherOLED_WiFi::renderIPAddress ( void )
     @brief  Updates the OLED display
 */
 /******************************************************************************/
-void Adafruit_FeatherOLED_WiFi::refreshIcons ( void )
+void Adafruit_FeatherOLED_WiFi::refreshIcons ( bool clearStatus)
 {
   fillRect(0, 0, 128, 8, BLACK);
-  fillRect(0, 24, 128, 8, BLACK);
+  if (clearStatus) { //status line is shared with the IP/connect
+  	fillRect(0, 24, 128, 8, BLACK);
+  	renderConnected();
+	renderIPAddress();
+  }
   renderBattery();
   renderRSSI();
-  renderConnected();
-  renderIPAddress();
   display();
 }
